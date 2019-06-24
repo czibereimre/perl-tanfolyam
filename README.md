@@ -62,4 +62,10 @@ $_;
 $tomb[0]
 $szamok[2]
 
+#negatív indexnél hátulról visszafele számozható. pl utolsó elem:
+$tomb[-1] 
+
+#van alapértelmezett tömb válozó
+@_;
+
 
