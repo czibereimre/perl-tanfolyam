@@ -90,6 +90,9 @@ perl -e '@tomb = (1,2,3,4); push @tomb,5,6; print join(",",@tomb), "\n"'
 
 #tömb csokolása az elejéről shift-el
 perl -e '@tomb = (1,2,3,4); shift @tomb; print join(",",@tomb), "\n"'
+#a levágott érték megtartása változóba
+$valtozo = shift @tomb
+
 
 
 #egyébb tömb műveletek még: shift, unshift, pop, push
@@ -179,8 +182,89 @@ elso.pl syntax OK
 
 
 
+#Asszociatív tömb. Nem indexel hivatkozunk az elemekre, hanem nevesítjük őket
+
+%hash = ("elso",1,"masodik",2)
+#vagy
+@tomb = ("elso",1,"masodik",2)
+%hash = @tomb
+#vagy
+%hash = ("elso" => 1, "masodik" =>2)
+
+# => hozzárendelő operátor
+
+#asszociatív tömb elemére hivatkozás
+%hash = ("elso" => 1, "masodik" =>2);
+print $hash{"masodik"};
+
+
+#értékadás
+%hash{"elso"} = 1
+%hash{"masodik"} = 2
+
+#kiíratás
+print %hash
+
+#műveletek asszociatív tömbökkel
+#keys a paraméterenként átadott tömb kulcsait adja vissza
+$ perl -e '%hash = ("elso" => 1, "masodik" => 2); @kulcsok = keys %hash;print join(",",@kulcsok), "\n";'
+elso,masodik
+#values pedig az értékeket adja vissza
+$ perl -e '%hash = ("elso" => 1, "masodik" => 2); @values = values %hash;print join(",",@values), "\n";'
+1,2
+#kulcspárok, de egyszerre csak egy párt ad vissza
+$ perl -e '%hash = ("elso" => 1, "masodik" => 2); print join("=>",each(%hash)), "\n";'
+elso=>1
+#kucspár létezésének vizsgálata
+$ perl -e '%hash = ("elso" => 1, "masodik" => 2); print exists($hash{"elso"}), "\n";'
+1
+$ perl -e '%hash = ("elso" => 1, "masodik" => 2); print exists($hash{"elsoo"}), "\n";'
+              # <- ez itt egy üser visszatérési string :)
+
+#kulcspár törlése
+$ perl -e '%hash = ("elso" => 1, "masodik" => 2); delete($hash{"elso"});  print %hash, "\n";'
+masodik2
 
 
 
+
+
+#operátorok - math
+= értékadás
++ összeadás
+- kivonás
+* szorzás
+/ osztás
+% maradékos osztás
+** hatvány
++= hozzáadás a bal oldali számhoz
+-= kivonás a bal oldali számból
+< kisebb
+> nagyobb
+<= kisebb-egyenlő
+=> nagyobb-egyenlő
+== egyenlő
+!= nem egyenlő
+<=> összehasonlítás, -1 bal oldal a kisebb, 0 egyenlő, 1 jobb oldal a kisebb
+
+
+
+#operátorok - string
+. összefűzés
+string x szám   a stringet megszorozza a számmal
+lt kisebb, mint
+gt nagyobb, mint
+le kisebb-egyenlő
+ge nagyobb-egyenlő
+eq egyenlő
+ne nem egyenlő
+cmp összehasonlítás, -1 bal oldal a kisebb, 0 egyenlő, 1 jobb oldal a kisebb
+
+
+
+
+$x = 1000000000;
+#vagy
+$x = 1_000_000_000;
 
 
