@@ -267,4 +267,29 @@ $x = 1000000000;
 #vagy
 $x = 1_000_000_000;
 
+#logikai operátorok
+&& és
+and és
+|| vagy
+or vagy
+! nem
+not nem
 
+
+#!!! a || jel precedencia értéke kisebb az = jeltől, viszont az or  -é nem. Lásd még:    perldoc perlop
+
+#biteken végzett operátorok
+& és
+| vagy
+^ kizáróvagy
+
+#kötőoperátorok
+=~ illeszkedik
+!~ nem illeszkedik
+
+#vessző operátor
+,
+
+#Feltételes operátor
+
+( feltétet ) ? igaz_ág : hamis_ág
