@@ -1,0 +1,31 @@
+Példaprogramok
+
+- felvitel.pl
+
+1, A felvitel szubrutin meghívásának módjai felvitel(), felvitel, pozíció
+2, Szubrutin meghívási módok
+
+- subrutine.pl
+
+1, perl szubrutin cím szerint kerül meghívásra
+
+- speed.pl
+
+- speed2.pl
+
+- speed3.pl
+
+- storable.pl
+
+1 szerializálás
+  store($adat, $filenev)	# tárolás fájlba
+  store_fd($adat, *FH)		# megnyitott fájlkezelőbe (binmode(FH))
+  $szerializalt = freeze($adat)	# memóriába
+  
+  retrieve($filenev)
+  fd_retrieve(*FH)
+  thaw($szerializált)
+
+
+man Benchmark
+man Time::HiRes

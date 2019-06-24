@@ -1,0 +1,129 @@
+Numerikus összehasonlítás
+=========================
+
+- a visszatérési érték 1, ha a balérték nagyobb -1 ha a jobbérték nagyobb és
+  0 ha a két érték egyforma. 
+
+perl -e 'print 1 <=> 0x1'	# 0
+perl -e 'print 1 <=> 0x2'	# -1 
+perl -e 'print 2 <=> 0x1'	# 1
+
+perl -e 'print 2 <=> 0b10'	# 0
+perl -e 'print 2 <=> 0b11'	# -1
+perl -e 'print 2 <=> 0b1'	# 1
+
+perl -e 'print 1 <=> 1'		# 0
+perl -e 'print 1 <=> 2'		# -1
+perl -e 'print 2 <=> 1'		# 1
+
+perl -e 'print 1_0 <=> 2'	# 1
+perl -e 'print 2 <=> 1_0'	# -1
+perl -e 'print 1_0 <=> 10'	# 0
+
+perl -e 'print 2 <=> "1_0"'	# 1 (mivel a "1_0" konverzió után 1 lesz)
+
+
+perl -e 'print "1" <=> "1"'	# 0
+perl -e 'print "1" <=> "2"'	# -1
+perl -e 'print "2" <=> "1"'	# 1
+
+perl -e 'print 1 <=> "A"'	# 1 (mivel az "A" értéke 0 lesz)
+perl -e 'print "A" <=> 1'	# -1 (mivel az "A" értéke 0 lesz)
+perl -e 'print "A" <=> "A"'	# 0 (mivel az "A" értéke 0 lesz)
+perl -e 'print "A" <=> "B"'	# 0 (mivel az "A" és "B" értéke 0 lesz)
+
+perl -e 'print "1A" <=> 1'	# 0 (mivel az "1A" értéke 1 lesz)
+perl -e 'print "2A" <=> 1'	# 1 (mivel az "2A" értéke 2 lesz)
+perl -e 'print 1 <=> "2A"'	# -1 (mivel az "2A" értéke 2 lesz)
+
+perl -e 'print "1" <=> print 2' # 20 (mivel a print visszatérési értéke 1)
+
+
+Aritmetikai összehasonlítás
+===========================
+
+- "A" ASCII kódértéke 65, "B" kód értéke 66
+
+perl -e 'print "A" cmp "A"'	# 0
+perl -e 'print "A" cmp "B"'	# -1
+perl -e 'print "B" cmp "A"'	# 1
+perl -e 'print "A" cmp "AB"'	# -1
+
+perl -e 'print 1 cmp "A"'	# -1
+perl -e 'print "A" cmp 1'	# 1
+perl -e 'print "1A" cmp 1'	# 1 (mivel nem numerikus adatként hasonlít)
+
+
+Logikai operátorok
+==================
+
+- &&  (ÉS), || (VAGY), !   (NEM).
+- and (ÉS), or (VAGY), not (NEM).
+
+perl -e '$a = 1; $b = 2; $retval = ($a > 0) && ($b > 0); print $retval'	# 1
+perl -e '$a = 1; $b = 2; $retval = ($a > 0) && ($b < 0); print $retval'	# undef
+
+perl -e '$a = 1; $b = 2; $retval = $a || $b; print $retval'		# 1
+perl -e '$a = undef; $b = 2; $retval = $a || $b; print $retval'		# 2
+perl -e '$a; $b = 2; $retval = $a || $b; print $retval'			# 2
+perl -e '$b = 2; $retval = $a || $b; print $retval'			# 2
+
+perl -e '$a = 1; $b = 2; $retval = $a or $b; print $retval'		# 1
+perl -e '$b = 2; $retval = $a or $b; print $retval'			# undef
+
+perl -e '$a = 1; print !$a'		# undef
+perl -e 'print !$a'			# 1
+perl -e '$a = 1; print not $a'		# undef
+perl -e 'print not $a'			# 1
+
+
+Bitenkénti logikai operátorok
+=============================
+
+- & (ÉS), | (VAGY), ^ (KIZÁRÓ VAGY).
+
+perl -e 'print 4 & 2'		# 0 (mert 0b0100 & 0b0010 => 0b0000)
+perl -e 'print 4 | 2'		# 6 (mert 0b0100 | 0b0010 => 0b0110)
+perl -e 'print 4 ^ 2'		# 6 (mert 0b0100 ^ 0b0010 => 0b0110)
+perl -e 'print 4 ^ 3'		# 7 (mert 0b0100 ^ 0b0011 => 0b0111)
+perl -e 'print 4 ^ 4'		# 0 (mert 0b0100 ^ 0b0100 => 0b0000)
+perl -e 'print "4.50" & "2.50"'	# "0.50" (mert két sztringből sztring lesz)
+perl -e 'print 4.50 & "2.50"'	# 0 (mert 0b0100 & 0b0010 => 0b0000)
+
+
+Léptető operátorok
+==================
+
+- <<, >>
+
+perl -e 'print 2 << 4'		# 32 (mert 0b000010 << 4 => 0b100000)
+perl -e 'print 16 >> 3'		# 2 (mert 0b010000 >> 3 => 0b000010)
+perl -e 'print 16.5_0 >> 3.14'	# 2 (mert 0b010000 >> 3 => 0b000010)
+
+
+Kötő operátorok
+===============
+
+- =~, !~
+
+perl -e '$string = "Perl"; print $string =~ /Pe/'	# 1
+perl -e '$string = "Perl"; print $string =~ /Ne/'	# undef
+perl -e '$string = "Perl"; print $string !~ /Ne/'	# 1
+
+
+Vessző operátor
+===============
+
+- ,
+
+perl -e '$skalar = ("első", "második"); print $skalar'	# "második"
+perl -e '@lista = ("első", "második"); print @lista'	# "első""második"
+
+
+Feltételes operátor
+===================
+
+perl -e '$a = 1; $b = 2; ($a > $b) ? print "IGAZ" : print "HAMIS"'	# "HAMIS"
+perl -e '$a = 1; $b = 2; ($a < $b) ? print "IGAZ" : print "HAMIS"'	# "IGAZ"
+
+

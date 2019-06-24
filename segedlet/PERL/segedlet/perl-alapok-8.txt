@@ -1,0 +1,30 @@
+eval
+====
+
+- megadása
+
+eval KIFEJEZÉS
+eval KÓDBLOKK
+eval
+
+
+- kiértékelése
+
+--- eval.pl ---
+$a = 10; $b = 20;
+
+$kif = '$a + $b';
+print (eval $kif);	# 30
+print (eval "$kif");	# 30
+print (eval '$kif');	# $a + $b
+print (eval { $kif });	# $a + $b
+---------------
+
+
+- használata
+
+perl -e '$command = "print 123" ; $rv = eval $command; print $rv'
+perl -e '$command = "return 9" ; $rv = eval $command; print $rv'
+
+perl -e '$command = "for (1..3) {print $_}" ; eval $command or warn $@'	#123
+perl -e 'eval { do { print("> "); chomp($_ = <>); eval($_); warn if $@; } while ($_ ne "exit"); }'	# parancsértelmező

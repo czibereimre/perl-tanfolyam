@@ -1,0 +1,51 @@
+Könyvtárműveletek
+=================
+
+- könyvtárváltás
+
+chdir "/elérési/út"
+
+- könyvtár létrehozása
+
+mkdir "/könyvtár" [oktális maszk (alapból 0777)]
+
+- könyvtár törlése
+
+rmdir "könyvtárnév"
+
+- könyvtárak megnyitása, olvasása, lezárása
+
+1.
+
+opendir DIR, "könyvtárnév" or die "Nem lehet megnyitni a könyvtárat: $!";
+@fajlok = readdir DIR;
+closedir DIR;
+
+2.
+
+opendir DIR, "könyvtárnév" or die "Nem lehet megnyitni a könyvtárat: $!";
+while (readdir DIR) {
+  print $_;
+{
+closedir DIR;
+
+3.
+
+opendir(my $dh, $konyvtar) || die "nem lehet megnyitni a konyvtarat";
+@fajlok = grep { /^[^\.]/ && -f "$konyvtar/$_" } readdir($dh);
+closedir $dh;
+
+- további parancsok
+
+telldir DIR
+seekdir DIR, pozíció
+
+
+- kapcsolódó változók
+
+perl -e 'print $^O'		# linux
+perl -e 'print $<'		# UID (valós)
+perl -e 'print $('		# GID (valós)
+perl -e 'print $]'		# verzió
+
+

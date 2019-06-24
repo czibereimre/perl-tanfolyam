@@ -1,0 +1,88 @@
+Skalárokkal vagy sztringekkel kapcsolatos műveletek
+===================================================
+
+"chomp", "chop", "chr", "crypt", "hex", "index", "lc", "lcfirst",
+"length", "oct", "ord", "pack", "reverse", "rindex", "sprintf",
+"substr", "uc", "ucfirst"
+
+perl -e '$_ = "a"; chomp ; print"		# "a"
+perl -e '$_ = "a\n"; chomp ; print"		# "a"
+perl -e '$_ = "a\n\n"; chomp ; print"		# "a\n"
+
+perl -e '$_ = "a" ; chop ; print'		# undef
+perl -e '$_ = "a\n" ; chop ; print'		# "a"
+
+perl -e 'print chr(97)'				# "a"
+
+perl -e 'print crypt "titok", "2r"'		# "2rzhyp/1oHGT."
+perl -e '(crypt("titok", "2rzhyp/1oHGT.") eq "2rzhyp/1oHGT.") ? print "OK" : print "FAILED"'		# "OK"
+
+perl -e 'print hex(61)'				# 97
+perl -e 'print chr(hex(61))'			# "a"
+
+perl -e '$_ = "Ez itt egy sor"; print index $_, "i"'		# 3
+perl -e '$_ = "Ez itt egy sor"; print index $_, "it", 1'	# 3
+perl -e '$_ = "Ez itt egy sor"; print index $_, "i", 5'		# -1
+
+perl -e '$_ = "Ez itt egy sor"; print rindex $_, "t"'		# 5
+perl -e '$_ = "Ez itt egy sor"; print rindex $_, "", 6'		# 5
+perl -e '$_ = "Ez itt egy sor"; print rindex $_, "", 3'		# -1
+
+perl -e 'print lc "ELEM"'					# "elem"
+perl -e 'print lc "ŰR"; sub ToLower{return"0170\t0171"}'	# "Űr"
+perl -Mutf8 -e 'print lc "ŰR"; sub ToLower{return"0170\t0171"}'	# "űr"
+
+perl -e 'print lcfirst "ELEM"'			# "eLEM"
+
+perl -e 'print length "űr"'			# 3
+perl -Mutf8 -e 'print length "űr"'		# 2
+
+perl -e 'print oct(20)'				# 16
+
+perl -e 'print ord "abcde"'			# 97
+
+perl -e 'print pack "ccccc", 97, 98, 99, 100, 101'	# "abcde"
+
+perl -e '$_ = reverse "Geza kek az eg" ; print'		# "ge za kek azeG"
+
+
+perl -e '$sztring = "Hello" ; printf "%10s", $sztring'	# "     Hello"
+perl -e '$sztring = "Hello" ; printf "%-10s", $sztring'	# "Hello     "
+perl -e '$sztring = "Hello" ; printf "%010s", $sztring'	# "00000Hello"
+
+perl -e '$egesz = 12 ; printf "% d", $egesz'		# " 12"
+perl -e '$egesz = 12 ; printf "%+d", $egesz'		# "+12"
+perl -e '$egesz = 12 ; printf "%x", $egesz'		# "c"
+perl -e '$egesz = 12 ; printf "%e", $egesz'		# 1.200000e+01
+perl -e '$egesz = 12 ; printf "%f", $egesz'		# 12.000000
+
+perl -e '$pi = 3.1415926; printf "%.2f", $pi'		# 3.14
+perl -e '$pi = 3.1415926; sprintf "%.2f", $pi'		# undef
+
+perl -e 'printf "<%3d> <%-6s> <%5.2f>", 1, 2, 3.14159'	# "<  1> <2     > < 3.14>"
+
+   1. %% százalékjel
+   2. %c megadott számú karakter
+   3. %s sztring
+   4. %d előjeles egész decimális formában
+   5. %u előjel nélküli egész decimális formában
+   6. %o előjeles integer oktális formában
+   7. %x előjel nélküli integer hexadecimális formában
+   8. %e lebegőpontos szám tudományos jelöléssel
+   9. %f lebegőpontos szám rögzített decimális jelöléssel
+  10. %g lebegőpontos szám %e vagy %f formában
+
+# printf egyenlő print FAJLKEZELO sprintf(FORMATUM, LISTA)
+
+
+substr Kifejezés, Offset, Hossz, Helyettesítő
+substr Kifejezés, Offset, Hossz
+substr Kifejezés, Offset
+
+perl -e '$_ = "Fekete macska"; print substr $_, 7'	# "macska"
+perl -e '$_ = "Fekete macska"; print substr $_, 7, 4'	# "macs"
+perl -e '$_ = "Fekete macska"; print substr $_, 7, -2'	# "macs"
+
+perl -e '$from = "Fekete macska"; substr ($from, 7, 2) = "kutya"; print $from'	# "Fekete kutyacska"
+perl -e '$from = "Fekete macska"; substr $from, 7, 2, "kutya"; print $from'
+

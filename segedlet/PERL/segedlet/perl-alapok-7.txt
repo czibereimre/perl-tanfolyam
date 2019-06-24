@@ -1,0 +1,174 @@
+Szubrutinok
+===========
+
+- deklarálása
+
+sub NÉV UTASÍTÁSBLOKK;					# sub fuggveny {...}
+sub NÉV(PROTOTÍPUSOK) UTASÍTÁSBLOKK			# sub fuggveny ($$) {...}
+sub NÉV(PROTOTÍPUSOK) :TULAJDONSÁG UTASÍTÁSBLOKK	# sub fuggveny ($$) :Protected {...}
+
+
+- meghívása
+
+NÉV (LISTA)	# általános forma
+NEV LISTA	# ha a bevezetés megelőzi a használatot
+&NÉV (LISTA)	# prototípusok figyelmen kívül hagyása
+&NÉV		# a @_ tartalmazza a paramétereket
+
+
+- példák
+
+1.
+  sub listazo {
+    print "@_";
+  }
+
+  listazo(1..10);
+
+2.
+  sub kiir {
+    my ($elso, $masodik) = @_;
+    print 'Első paraméter: ', $elso, "\n";
+    print 'Második paraméter: ', $masodik, "\n";
+  }
+
+  kiir('Hello', 'világ');
+
+3.
+  sub atlag {
+    my $osszeg;
+    $osszeg += $_ for (@_);
+    $osszeg / @_
+  }
+
+  atlag(2,4,6,8);
+
+4.
+  sub negyzet {
+    my $szam = shift;
+    return $szam ** 2;
+  }
+
+  negyzet(3);
+
+
+- speciális szubrutinok
+
+print 1;
+BEGIN { print 2 }
+print 3;
+
+# 213
+
+END { print 1 }
+print 2;
+BEGIN { print 3 }
+
+# 321
+
+
+Csomagok
+========
+
+# alapértelmezett csomag main
+
+$x = 1;
+
+# létrehozzuk az A csomagot
+
+package A;
+$x = 1;
+
+# létrehozzuk a B csomagot
+
+package B;
+$x = -1;
+
+# visszaváltunk A csomagra és növeljük a változó értékét
+
+package A;
+$x++;
+
+# visszaváltunk a main csomagra és a változók értékét kiíratjuk
+
+package main;
+
+print "\$x a main csomagban: $x\n";
+print "\$x az A csomagban: $A::x\n";
+print "\$x a B csomagban: $B::x\n";
+
+print "A változók összege: ", $main::x + $A::x + $B::x, "\n";
+
+
+Modulok
+=======
+
+package X::Y::Z;		# X/Y/Z.pm
+
+- elérési útvonalak
+
+  1. PERL5LIB környezeti válozó
+  2. -I parancssori kapcsoló
+  3, use lib 'elérési út'; kifejezés
+  4. @INC tömb közvetlen módosításával (push @INC, '/eleresi/ut')
+
+- modulok betöltése
+
+use				# fordítási időben
+require				# futási időben
+
+use MyModule(x);
+
+BEGIN {
+  require MyModule;
+  MyModule::import(x);
+} 
+
+
+- pragmák
+
+use strict;
+use warnings;
+
+
+- modul példa
+
+-----------
+package MyGroup::MyModule;
+
+require Exporter;		# Nagyon fontos modul!!!
+
+our $VERSION = '1.00';
+our @ISA = qw(Exporter);
+our @EXPORT = qw($a @b d);	# kerüljük az automatikus exportot
+our @EXPORT_OK = qw(c d);
+our %EXPORT_TAGS = (
+  valtozok => [ qw($a @b) ],
+  szubrutinok => [ qw(c d) ]
+);
+
+
+$a = 1;
+@b = qw(egy ketto harom);
+
+sub c {
+  print $_[0];
+}
+
+sub d {
+  return;
+}
+
+1;
+-----------
+
+
+use MyGroup::MyModule;			# @EXPORT tömb összes eleme importálásra kerül
+
+use MyGroup::MyModule qw($a @b);	# csak a megadott változók és szubrutinok kerülnek importálásra
+
+use MyGroup::MyModule();		# nem történik import
+
+use MyGroup::MyModule 1.00;		# csak a megadott, vagy annál magasabb verziójú modul használható
+
+use 5.8;				# csak a perl 5.8 vagy magasabb verzióval használható

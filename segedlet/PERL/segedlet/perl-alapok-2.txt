@@ -1,0 +1,108 @@
+Utasításblokkok
+===============
+
+- {}
+- {
+	utasítás;
+	utasítás;
+  }
+
+- CIMKE: {
+	utasítás;
+	utasítás;
+  }
+
+  goto CIMKE;
+
+
+perl -e 'goto CIMKE; CIMKE: { print "HELLO\n" }'	# "HELLO"
+perl -e 'CIMKE: { print "HELLO\n" }; goto CIMKE'	# Sok "HELLO"
+
+
+Elágazások
+==========
+
+- if
+
+perl -e 'print "IGAZ" if 2 < 1'		# undef
+perl -e 'print "IGAZ" if 2 > 1'		# "IGAZ"
+perl -e 'print "IGAZ" if (2 > 1)'	# "IGAZ"
+perl -e 'print "IGAZ" if not (2 > 1)'	# undef
+perl -e 'print "IGAZ" if !(2 > 1)'	# undef
+perl -e 'print "IGAZ" if not (1 > 2)'	# "IGAZ"
+perl -e 'print "IGAZ" if !(1 > 2)'	# "IGAZ"
+perl -e 'if (2 > 1) { print "IGAZ" }'	# "IGAZ"
+
+- if/else
+
+perl -e 'if (2 > 1) { print "IGAZ" } else { print "HAMIS" }'	# "IGAZ"
+perl -e 'if (2 < 1) { print "IGAZ" } else { print "HAMIS" }'	# "HAMIS"
+
+- if/elsif/else
+
+perl -e '$a = 1; if ($a < 1) { print "KISEBB" } elsif ($a > 1) { print "NAGYOBB" } else { print "EGYENLŐ" }'	# "EGYENLŐ"
+perl -e '$a = 2; if ($a < 1) { print "KISEBB" } elsif ($a > 1) { print "NAGYOBB" } else { print "EGYENLŐ" }'	# "NAGYOBB"
+perl -e '$a = 0; if ($a < 1) { print "KISEBB" } elsif ($a > 1) { print "NAGYOBB" } else { print "EGYENLŐ" }'	#"KISEBB"
+
+- unless
+
+perl -e 'unless (1 < 2) { print "IGAZ" } else { print "HAMIS" }'	# "HAMIS"
+perl -e 'unless (1 > 2) { print "IGAZ" } else { print "HAMIS" }'	# "IGAZ"
+
+
+Ciklusszerkezetek
+=================
+
+- while
+
+perl -e '$a = 1; while ($a < 3) { print "$a\n" }'	# sok "1"
+perl -e '$a = 1; while ($a < 3) { print "$a " ; $a++ }'	# "1 ""2 "
+
+- until
+
+perl -e '$a = 1; until ($a > 3) { print "$a " ; $a++ }' # "1 ""2 ""3 "
+
+- do/while
+
+perl -e '$a = 1; do { print "$a " ; $a++ } while ($a < 3)'	# "1 ""2 "
+
+- do/until
+
+perl -e '$a = 1; do { print "$a " ; $a++ } until ($a > 3)'	# "1 ""2 ""3 "
+
+- for(kezdeti kifejezés; teszt kifejezés; növelő/csökkentő kifejezés)
+
+perl -e 'print for (1..10)'		# 12345678910
+perl -e 'print "$_ " for (1..5)'	# "1" "2 ""3 ""4 ""5 "
+
+perl -e '@list = (1,2,3); for (@list) { print }'	# 123
+
+perl -e 'for($i=1; $i<=5; $i++) { print $i }'		# 12345
+
+perl -e 'for($i=1; $i<=5;) { print "Írjon be egy számot: "; $i = <STDIN>; print $i }'		# kilépéshez 5 fölötti szám kell
+perl -e 'for($i=1; (0<$i and $i<=5);) { print "Írjon be egy számot: "; $i = <STDIN>; print $i }'	# Kilépéshez 5 fölötti vagy 1 alatti szám kell
+
+- foreach
+
+perl -e 'foreach (1..5) { print }'				# 12345
+perl -e '@lista = (1,2,3,4,5); foreach (@lista) { print }'	# 12345
+perl -e '@lista = (1,2,3,4,5); foreach (@lista) { print $_ }'	# 12345
+
+perl -e '@lista = (1,2,3,4,5); foreach $skalar (@lista) { print $skalar }'	# 12345
+
+
+- next, last, redo és continue operátorok
+
+perl -e 'for (1..5) { next if ($_ == 3) ; print }'	# 1245
+
+perl -e 'for (1..5) { last if ($_ == 3) ; print }'	# 12
+
+perl -e 'for (1..5) { redo if ($_ == 3) ; print }'	# végtelen ciklus
+
+perl -e '{ print "írjon nullát a kilépéshez: " ; $a = <STDIN>; if ($a ne "0\n") { redo }}'		# nullát írva kilép;
+perl -e '{ print "írjon nullát a kilépéshez: " ; chomp($a = <STDIN>); if ($a ne "0") { redo }}'	# nullát írva kilép;
+
+perl -e '$a = 1; while ($a < 5) { print "$a " ; ++$a } continue { print "X\n" }'			# "1 X""2 X""3 X""4 X"
+perl -e '$a = 0; while ($a < 5) { ++$a; next if ($a == 3); print "$a "}  continue { print "X" }'	# "1 X"2 X""X""4 X""5 X"
+
+

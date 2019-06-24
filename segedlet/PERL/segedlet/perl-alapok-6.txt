@@ -1,0 +1,93 @@
+Rendszeridő
+===========
+
+- time függvény
+
+perl -e 'print time'		# 1287047446
+
+- localtime függvény		# 
+
+perl -e 'print localtime'	# 3121114911042861
+perl -e 'print localtime(time)'	# 3121114911042861
+
+perl -e 'print scalar localtime'	# Thu Oct 14 11:12:03 2010
+
+#     0       1     2    3     4     5     6       7     8
+($másodperc,$perc,$óra,$nap,$hónap,$év,$hetinap,$évnap,$nyár) = localtime(time);
+
+hónap = $hónap + 1
+év = $év + 1900
+nyár = 1 vagy 0
+
+- gmtime függvény
+
+#     0       1     2    3     4     5     6       7     8
+($másodperc,$perc,$óra,$nap,$hónap,$év,$hetinap,$évnap,$nyár) = gmtime(time);
+
+nyár mindig 0
+
+perl -e 'print scalar localtime, "\n", scalar gmtime, "\n"'
+
+Thu Oct 14 11:26:12 2010
+Thu Oct 14 09:26:12 2010
+
+- kapcsolódó modulok
+
+POSIX(:strftime), Time::HiRes
+
+
+Rendszerfolyamatok kezelése
+===========================
+
+- backtick operátor
+
+my $passwd = '/etc/passwd';
+my $sorok_szama = `wc -l $passwd`;
+print "Sorok száma a $passwd állományban: $sorok_szama\n";
+
+
+- system függvény
+
+system LISTA
+system PROGRAM LISTA
+
+- exec függvény
+
+perl -e 'exec "/bin/echo", "egy", "ketto", "harom"'	# egy ketto harom
+
+
+Referenciák
+===========
+
+- valós referenciák
+
+$skalar_ref = \$skalar;
+$tomb_ref = \@tomb;
+$hash_ref = \%hash;
+$szub_ref = \&szubrutin;
+
+
+- névtelen referenciák
+
+$tomb_ref = [ 1, 2, "harom" ];
+$hash_ref = { a => 1, b => 2, c => 'harom' };
+$szub_ref = sub { print "Hello" };
+
+- visszahivatkozás
+
+$$skalar_ref	vagy	${$skalar_ref}
+@$tomb_ref	vagy	@{$tomb_ref}
+%$hash_ref	vagy	%{$hash_ref}
+&$szub_ref()	vagy	&{$szub_ref}()
+
+$tomb_ref->[1]		vagy	@{$tomb_ref}[1]
+$hash_ref->{'c'}	vagy	%{$hash_ref}{'c'}
+
+- lekérdezés
+
+ref			# (SCALAR, ARRAY, HASH, CODE, REF)
+
+perl -e '$sztring = "Hello"; print ref $sztring'	# undef
+perl -e '$$sztring = "Hello"; print ref $sztring'	# "SCALAR"
+
+
