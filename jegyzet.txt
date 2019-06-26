@@ -300,5 +300,87 @@ $ perl -e '$a = 1; $b = 2; ($a < $b) ? print "IGAZ\n" : print "HAMIS\n"'
 IGAZ
 
 
+Utasításblokk (nincs utána ;)
+- {}
+
+- {
+	utasitas;
+	utasitas;
+  }
+
+- CIMKE: {
+	utasitas;
+	utasitas;
+  }
+
+  goto CIMKE;
+
+
+
+
+Reguláris kifejezések:
+
+* - az előtte álló karakterből nulla vagy több található benne
++ - az előtte álló karakterből 1 vagy több
+? - az előtte álló karakterből 0 vagy 1
+\ - scpeciállis karakter váltó karakter
+. - egy teccőleges karakter, kivéve a \n (újsor)
+[acx] v. [a-z] vagy [0-9] vagy [a-zA-Z0-9] - egy karakterre több lehetőség is megadható
+^[a-fA-F0-9]+$ - pl. csak hexa szám illesztése
+{N} - fix karakterhossz megadása
+^[a-fA-F0-9]{8}$ - pl. pontosan 8 karakteres hexa szám lehet csak
+{N,} - legalább N karakter
+{N,M} - legalább N, legfeljebb M karakter lehet
+[^c] - Kivéve a c karakter. Kizárás
+/x(abc|def)y/ - x-el kezdődik utána abc vagy def áll és y-ra végződik
+
+\w - word/szó karakter  (minden ami nem szám és nem white space)
+\W - nem word/szó karakter
+\d - szám karakter, de az _ is. másként írva [0-9_]
+\D - nem szám karakter
+\s - whitespace karakter
+\S - nem whitespace karakter
+
+
+s/MINTA/CSERE/;  - cserélés
+s/MINTA/CSERE/g;  - az összes előfordulás cseréje
+
+$ perl -e '$sztring="abc - 123"; $sztring =~ s/[^a-zA-Z0-9]//g; print $sztring."\n";'
+abc123
+
+s/MINTA/függvény()/e - a függvény eredményére cserél
+
+$ perl -e '$_="elso\nmasodik\nharmadik";  print /^.+$/;'
+HAMIS
+
+$ perl -e '$_="elso\nmasodik\nharmadik";  print /^.+$/m;'      # m - töbsorosként kezeli a bemeneti sztinget
+IGAZ
+
+
+$ perl -e '$_="elso\nmasodik\nharmadik";  /^(.+)$/m; print "$1\n"'
+elso
+
+
+$ perl -e '$_="elso\nmasodik\nharmadik";  /^(.+)$/s; print "$1\n"'
+elso
+masodik
+harmadik
+
+$ perl -e '$_="elso\nmasodik\nharmadik";  /^(.+)$/sm; print "$1\n"'
+elso
+masodik
+harmadik
+
+tomb = split /MINTA/   - $_ -t a MINTA illesztésnél szétdarabolja és a @tomb -be rakja az elemeket
+tomb = split /MINTA/, $valtozó   - MINTA illesztésnél szétdarabolja és a @tomb -be rakja az elemeket
+tomb = split /MINTA/, $valtozó, N   - MINTA illesztésnél szétdarabolja és a @tomb -be rakja az elemeket és max N elemre darabolja
+tomb = split /(MINTA)/   - MINTA illesztésnél szétdarabolja és a @tomb -be rakja az elemeket a határolókkal
+
+join ":",@tomb   - összefűzi a tömb elemeit és az első paraméterben megadott stringgel elválasztja
+
+$valtozo =~ tr/MINTA/CSERE/;
+
+
+
 
 
