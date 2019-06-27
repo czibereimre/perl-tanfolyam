@@ -381,6 +381,31 @@ join ":",@tomb   - összefűzi a tömb elemeit és az első paraméterben megado
 $valtozo =~ tr/MINTA/CSERE/;
 
 
+Többdimenziós tömb:
+@tomb = ([1,2],[3,4])
 
+
+$ perl -e '@tomb = ([1,2],[3,4]); print scalar @tomb, "\n"'
+2
+
+$ perl -e '$tomb_ref = [[1,2],[3,4]]; print  $tomb_ref->[1]->[0], "\n"'
+3
+
+$ perl -e '%hash = ("elso",1,"masodik",2); $hash_ref = \%hash; print %$hash_ref, "\n"'
+elso1masodik2
+
+$ perl -e '%hash = ("elso",1,"masodik",2); $hash_ref = \%hash; print %$hash_ref->{"elso"}, "\n"'
+Using a hash as a reference is deprecated at -e line 1.
+1
+
+
+$ perl -e '%hash = ("elso",1,"masodik",2); $hash_ref = \%hash; print $hash_ref->{"elso"}, "\n"'
+1
+
+$ perl -e '$hash_ref->{"elso"} = 1; $hash_ref->{"masodik"} = 2; print %$hash_ref, "\n"'
+elso1masodik2
+
+$ perl -e '$hash_ref = {"elso" => 1, "masodik" => 2}; print %$hash_ref, "\n"'
+elso1masodik2
 
 
