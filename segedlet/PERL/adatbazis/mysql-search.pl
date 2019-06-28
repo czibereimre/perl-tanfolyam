@@ -16,11 +16,12 @@ my $dbh = DBI->connect($dsn, $username, $password);
 
 $dbh->do("SET NAMES utf8");
 
-my $sth = $dbh->prepare("SELECT * FROM pelda WHERE cardnumber = ?");
+my $sth = $dbh->prepare("SELECT * FROM pelda WHERE cardnumber = ? OR username = ?");
 
-$sth->execute($query);
+$sth->execute($query,$query);
 
 while (my @array = $sth->fetchrow_array) {
+    print "ID\tusername\tfullname\tcardnumber\n";
     print "$array[0]\t$array[1]\t$array[2]\t$array[3]\n";
 }
 
